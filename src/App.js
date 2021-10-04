@@ -8,54 +8,70 @@ import InfoCard from "./components/InfoCard";
 
 function App() {
 
-    // Leeg object maken voor te ontvangen data
-    const [pokeData, setPokeData] = useState({});
+    // Beginpunt initialiseren voor range van 20 op te vragen pokemon-namen:
+    const [rangeStart, setRangeStart] = useState(0);
 
-    // State variabele initialiseren die te vinden range objecten bepaalt
-    const [resultRange, setResultRange] = useState(0);
+    // Leeg object maken voor 20 pokemon-naam-objecten:
+    const [pokeNamesData, setPokeNamesData] = useState({});
 
-    // Lijst maken met 20 pokemon-namen:
-    const [pokeNameList, setPokeNameList] = useState([])
+    // Lege lijst maken voor 20 pokeData-objecten:
+    const [pokeSetData, setPokeSetData] = useState([]);
 
-    // Infocards variabele maken:
-    // let [allInfoCards, setAllInfoCards] = useState([])
+    useEffect(() => {
 
+        console.log("ik ben ge-refreshed");
+        console.log(`de range pokemon-objecten is nu: ${rangeStart} t/m ${rangeStart+20}`);
 
-    // Get request met als resultaat een object met alle 20 gevonden pokemon-namen
-    // Gebruik maken van de waarde van resultRange state
-    async function fetchDataAllNames() {
-        try {
-            const result = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${resultRange})`)
-            let pokeNames = []
-            for (let i = 0; i < result.data.results.length; i++) {
-                const pokeName = result.data.results[i].name
-                pokeNames.push(pokeName)
+        // Get request met als resultaat een object met alle 20 gevonden pokemon-namen
+        // Gebruik maken van de waarde van resultRange state
+        async function fetchDataRangeNames() {
+            try {
+
+                const result = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${rangeStart})`);
+                console.log(result);
+
+                setPokeNamesData(result.data);
+
+                console.log("fetchDataRangeNames is uitgevoerd");
+                console.log("pokeNamesData bevat nu:" + pokeNamesData);
+                console.log("length van pokeNamesData=" + Object.keys(pokeNamesData).length);
+
+                // if (Object.keys(pokeNamesData).length > 0) {
+                    // voor ieder object in pokeNamesData met key=name de data van die pokemon opvragen:
+                for (let i = 0; i < 20; i++) {
+                    const nextName = pokeNamesData.results[i].name
+                    fetchDataSinglePoke(nextName)
+                }
+                // }
+
+                console.log("De set aan pokeData-objecten in pokeSetData is nu:" + pokeSetData)
+
+            } catch (e) {
+                console.error(e)
             }
-            setPokeNameList(pokeNames)
-        } catch (e) {
-            console.error(e)
         }
-    }
 
-    // Get request voor data van 1 pokemon uit de lijst
-    async function fetchDataSingleName(pokeName) {
-        try {
-            const result = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokeName}`);
-            setPokeData(result.data);
-        } catch (e) {
-            console.error(e);
+        // Get request voor data van 1 pokemon uit de lijst en voeg toe aan pokeSetData
+        async function fetchDataSinglePoke(pokeName) {
+            try {
+
+                const result = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokeName}`);
+                console.log("fetchDataSingleName uitgevoerd voor:" + pokeName);
+                console.log("pokeData van deze pokemon:" + result.data);
+
+                // object toevoegen aan array van poke-data-objecten:
+                setPokeSetData([...pokeSetData, result.data]);
+
+            } catch (e) {
+                console.error(e);
+            }
         }
-    }
 
-    // Voor alle namen data opvragen en kaartjes maken
-    // Iets zorgt nu voor dat hij eindeloos doorgaat met kaartjes maken
-    const allInfoCards = pokeNameList.map((item) => {
-        fetchDataSingleName(item)
-        return <InfoCard
-            key={item}
-            pokeData={pokeData}
-        />
-    });
+        // data opvragen van 20 pokemons vanaf startRange tot startRange+20
+        fetchDataRangeNames()
+
+        }, [rangeStart]
+    )
 
 
     return (
@@ -64,20 +80,22 @@ function App() {
             <header>
                 <img className="header-logo" src={pokemonLogo} alt="pokémon"/>
                 <div className="header-buttons">
-                    <button onClick={() => resultRange >= 20 && setResultRange(resultRange - 20)}>
+                    <button onClick={() => setRangeStart(rangeStart - 20)}>
                         VORIGE
                     </button>
-                    <button onClick={() => setResultRange(resultRange + 20)}>
+                    <button onClick={() => setRangeStart(rangeStart + 20)}>
                         VOLGENDE
-                    </button>
-                    <button onClick={fetchDataAllNames}>
-                        INIT
                     </button>
                 </div>
             </header>
 
             <section>
-                {Object.keys(pokeData).length > 0 && allInfoCards}
+                {/* Helaas krijg ik na uren klooien nu alle 20 pokemons op 1 kaartje. Haha, ik heb echt veel geprobeerd,
+                beter dan dit gaat het niet worden. Geloof niet dat ik goed snap nog hoe useEffect en mapping werkt...
+                Zou je me willen uitleggen wat ik doe en wat ik fout doe? Ik geloof dat het ook misgaat
+                bij het toevoegen van data-objecten aan de lege useState lijst.*/}
+                {pokeSetData.length > 0 &&
+                <InfoCard pokeSetData={pokeSetData}/>}
             </section>
 
         </div>
