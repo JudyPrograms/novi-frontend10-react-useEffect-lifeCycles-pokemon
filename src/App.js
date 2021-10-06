@@ -38,7 +38,7 @@ function App() {
                 console.log("length van pokeNamesData=" + Object.keys(pokeNamesData).length);
 
             } catch (e) {
-                console.error(e)
+                console.error(e);
             }
         }
 
@@ -52,7 +52,7 @@ function App() {
             <header>
                 <img className="header-logo" src={pokemonLogo} alt="pokémon"/>
                 <div className="header-buttons">
-                    <button onClick={() => setRangeStart(rangeStart - 20)}>
+                    <button onClick={() => setRangeStart(rangeStart < 20 ? 0 : rangeStart - 20)}>
                         VORIGE
                     </button>
                     <button onClick={() => setRangeStart(rangeStart + 20)}>
@@ -62,10 +62,10 @@ function App() {
             </header>
 
             <section>
-                {Object.keys(pokeNamesData).length > 0 && pokeNamesData.map((pokeName) => {
+                {Object.keys(pokeNamesData).length > 0 && pokeNamesData.map((item) => {
                     return (
-                        <InfoCard pokeName={pokeName.name} key={pokeName.name}/>
-                    )
+                        <InfoCard pokeName={item.name} key={item.name}/>
+                    );
                 })}
             </section>
         </div>

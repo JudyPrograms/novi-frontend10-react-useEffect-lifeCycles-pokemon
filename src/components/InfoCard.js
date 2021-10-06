@@ -7,14 +7,17 @@ function InfoCard({pokeName}) {
     const [pokeData, setPokeData] = useState({});
 
     useEffect(() => {
+
         // Get request voor data van 1 pokemon aan de hand van de meegegeven pokeName-property:
         async function fetchDataSinglePoke() {
             try {
 
                 const result = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokeName}`);
+
                 console.log("fetchDataSingleName uitgevoerd voor:" + pokeName);
                 // Hoe kan ik de inhoud van het object loggen ipv alleen [object Object]?
                 console.log("pokeData van deze pokemon:" + result.data);
+
                 setPokeData(result.data);
 
             } catch (e) {
@@ -24,7 +27,7 @@ function InfoCard({pokeName}) {
 
         fetchDataSinglePoke();
 
-    }, [pokeName])
+    }, [pokeName]);
 
     return (
         <article key={pokeName}>
@@ -51,4 +54,4 @@ function InfoCard({pokeName}) {
     );
 }
 
-export default InfoCard
+export default InfoCard;
