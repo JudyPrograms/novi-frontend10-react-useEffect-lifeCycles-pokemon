@@ -14,8 +14,8 @@ function App() {
     // Leeg object maken voor 20 pokemon-naam-objecten:
     const [pokeNamesData, setPokeNamesData] = useState({});
 
-    // Lege lijst maken voor 20 pokeData-objecten:
-    const [pokeSetData, setPokeSetData] = useState([]);
+    // // Lege lijst maken voor 20 pokeData-objecten:
+    // const [pokeSetData, setPokeSetData] = useState([]);
 
     useEffect(() => {
 
@@ -30,48 +30,32 @@ function App() {
                 const result = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${rangeStart})`);
                 console.log(result);
 
-                setPokeNamesData(result.data);
+                setPokeNamesData(result.data.results);
 
                 console.log("fetchDataRangeNames is uitgevoerd");
                 console.log("pokeNamesData bevat nu:" + pokeNamesData);
                 console.log("length van pokeNamesData=" + Object.keys(pokeNamesData).length);
-
-                // if (Object.keys(pokeNamesData).length > 0) {
-                    // voor ieder object in pokeNamesData met key=name de data van die pokemon opvragen:
-                for (let i = 0; i < 20; i++) {
-                    const nextName = pokeNamesData.results[i].name
-                    fetchDataSinglePoke(nextName)
-                }
+                //
+                // // if (Object.keys(pokeNamesData).length > 0) {
+                //     // voor ieder object in pokeNamesData met key=name de data van die pokemon opvragen:
+                // for (let i = 0; i < 20; i++) {
+                //     const nextName = pokeNamesData[i].name;
+                //     fetchDataSinglePoke(nextName);
                 // }
+                // // }
 
-                console.log("De set aan pokeData-objecten in pokeSetData is nu:" + pokeSetData)
+                // console.log("De set aan pokeData-objecten in pokeSetData is nu:" + pokeSetData)
 
             } catch (e) {
                 console.error(e)
             }
         }
 
-        // Get request voor data van 1 pokemon uit de lijst en voeg toe aan pokeSetData
-        async function fetchDataSinglePoke(pokeName) {
-            try {
-
-                const result = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokeName}`);
-                console.log("fetchDataSingleName uitgevoerd voor:" + pokeName);
-                console.log("pokeData van deze pokemon:" + result.data);
-
-                // object toevoegen aan array van poke-data-objecten:
-                setPokeSetData([...pokeSetData, result.data]);
-
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
         // data opvragen van 20 pokemons vanaf startRange tot startRange+20
-        fetchDataRangeNames()
+        fetchDataRangeNames();
 
         }, [rangeStart]
-    )
+    );
 
 
     return (
@@ -94,10 +78,12 @@ function App() {
                 beter dan dit gaat het niet worden. Geloof niet dat ik goed snap nog hoe useEffect en mapping werkt...
                 Zou je me willen uitleggen wat ik doe en wat ik fout doe? Ik geloof dat het ook misgaat
                 bij het toevoegen van data-objecten aan de lege useState lijst.*/}
-                {pokeSetData.length > 0 &&
-                <InfoCard pokeSetData={pokeSetData}/>}
+                {Object.keys(pokeNamesData).length > 0 && pokeNamesData.map((pokeName) => {
+                    return (
+                        <InfoCard pokeName={pokeName.name}/>
+                    )
+                })}
             </section>
-
         </div>
     );
 }
