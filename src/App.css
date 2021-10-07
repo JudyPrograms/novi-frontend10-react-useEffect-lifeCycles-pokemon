@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+body {
+    background-color: hsl(48, 100%, 50%);
+    font-family: "PT Sans", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-logo {
+    object-fit: contain;
+    height: 100px;
+    margin-top: 50px;
+}
+
+.header-buttons {
+    display: flex;
+    margin-top: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+header button {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    color: white;
+    background-color: hsl(215, 57%, 44%);
+    padding: 0.5rem;
+    border-radius: 0.2rem;
+    margin: 0 0.5rem;
+    width: 5rem;
+    box-shadow: 2px 2px 5px grey;
+}
+
+header button:hover {
+    background-color: hsl(215, 57%, 49%);
+}
+

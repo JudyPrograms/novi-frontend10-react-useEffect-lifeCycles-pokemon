@@ -1,0 +1,40 @@
+section {
+    display: flex;
+    justify-content: center;
+    margin: 50px 10vw;
+    flex-wrap: wrap;
+}
+
+article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    width: 8rem;
+    padding: 2rem;
+    border-radius: 0.2rem;
+    margin: 0.5rem;
+    box-shadow: 0 4px 8px 0 hsla(0, 0%, 0%, 0.2), 0 6px 20px 0 hsla(0, 0%, 0%, 0.19);
+}
+
+article h4 {
+    margin-bottom: 0.5rem;
+}
+
+.abilities {
+    list-style-type: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.abilities li {
+    background-color: hsl(215, 56%, 94%);
+    text-align: center;
+    margin: 0 0 0.25rem 0;
+}
+
+.card-img {
+    height: 50px;
+    width: 50px;
+}
