@@ -15,8 +15,8 @@ function InfoCard({pokeName}) {
                 const result = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokeName}`);
 
                 console.log("fetchDataSingleName uitgevoerd voor:" + pokeName);
-                // Hoe kan ik de inhoud van het object loggen ipv alleen [object Object]?
-                console.log("pokeData van deze pokemon:" + result.data);
+                // Hoe kan ik de inhoud van het object loggen ipv alleen [object Object]? >> komma gebruiken ipv +
+                console.log("pokeData van deze pokemon:", result.data);
 
                 setPokeData(result.data);
 
@@ -34,7 +34,7 @@ function InfoCard({pokeName}) {
             {Object.keys(pokeData).length > 0 &&
             <>
                 <h3>{pokeData.name}</h3>
-                <img src="" alt=""/>
+                <img className="card-img" src={pokeData.sprites.other["official-artwork"]["front_default"]} alt=""/>
                 <h4>Moves: {pokeData.moves.length}</h4>
                 <h4>Weight: {pokeData.weight}</h4>
                 <ul className="abilities">
